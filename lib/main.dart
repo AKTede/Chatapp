@@ -1,6 +1,5 @@
 import 'package:chat_app_test/services/auth/auth_gate.dart';
 import 'package:chat_app_test/firebase_options.dart';
-import 'package:chat_app_test/themes/light_mode.dart';
 import 'package:chat_app_test/themes/theme_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';

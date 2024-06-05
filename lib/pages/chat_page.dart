@@ -4,29 +4,80 @@ import 'package:chat_app_test/services/auth/auth_service.dart';
 import 'package:chat_app_test/services/chat/chat_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart'; // Importez cette bibliothèque pour formater l'heure
 
-class ChatPage extends StatelessWidget {
+class ChatPage extends StatefulWidget {
   final String receiverEmail;
   final String receiverID;
 
   ChatPage({super.key, required this.receiverEmail, required this.receiverID});
 
-  //text controller
+  @override
+  State<ChatPage> createState() => _ChatPageState();
+}
+
+class _ChatPageState extends State<ChatPage> {
+  // Text controller
   final TextEditingController _messageController = TextEditingController();
 
-  //chat & auth services
+  // Chat & auth services
   final ChatService _chatService = ChatService();
   final AuthService _authService = AuthService();
 
-  //send message
+  // For textfield focus
+  FocusNode myFocusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Add listener to focus node
+    myFocusNode.addListener(() {
+      if (myFocusNode.hasFocus) {
+        // Cause a delay so that the keyboard has time to show up
+        // Then the amount of remaining space will be calculated
+        // Then scroll down
+        Future.delayed(
+          const Duration(milliseconds: 500),
+          () => scrollDown(),
+        );
+      }
+    });
+
+    // Wait a bit for listView to be built, then scroll to bottom
+    Future.delayed(
+      const Duration(milliseconds: 500),
+      () => scrollDown(),
+    );
+  }
+
+  @override
+  void dispose() {
+    myFocusNode.dispose();
+    _messageController.dispose();
+    super.dispose();
+  }
+
+  // Scroll controller
+  final ScrollController _scrollController = ScrollController();
+  void scrollDown() {
+    _scrollController.animateTo(
+      _scrollController.position.maxScrollExtent,
+      duration: const Duration(seconds: 1),
+      curve: Curves.fastOutSlowIn,
+    );
+  }
+
+  // Send message
   void sendMessage() async {
-    //if there is something inside the textfield
+    // If there is something inside the textfield
     if (_messageController.text.isNotEmpty) {
-      // send the message
-      await _chatService.sendMessage(receiverID, _messageController.text);
-      //clear text controller
+      // Send the message
+      await _chatService.sendMessage(widget.receiverID, _messageController.text);
+      // Clear text controller
       _messageController.clear();
     }
+    scrollDown();
   }
 
   @override
@@ -34,7 +85,217 @@ class ChatPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        title: Text(receiverEmail),
+        title: Text(widget.receiverEmail),
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.grey,
+        elevation: 0,
+      ),
+      body: Column(
+        children: [
+          // Display all messages
+          Expanded(
+            child: _buildMessageList(),
+          ),
+          // User input
+          _buildUserInput(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMessageList() {
+    String senderID = _authService.getCurrentUser()!.uid;
+    return StreamBuilder(
+      stream: _chatService.getMessages(widget.receiverID, senderID),
+      builder: (context, snapshot) {
+        // Errors
+        if (snapshot.hasError) {
+          return const Text("Erreur");
+        }
+        // Loading
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Text("Chargement...");
+        }
+        // Return list view
+        return ListView.builder(
+          controller: _scrollController,
+          itemCount: snapshot.data!.docs.length,
+          itemBuilder: (context, index) {
+            DocumentSnapshot doc = snapshot.data!.docs[index];
+            return _buildMessageItem(doc, index == 0 || !isSameDay(snapshot.data!.docs[index - 1]['timestamp'], doc['timestamp']));
+          },
+        );
+      },
+    );
+  }
+
+  // Check if two timestamps are on the same day
+  bool isSameDay(Timestamp t1, Timestamp t2) {
+    DateTime d1 = t1.toDate();
+    DateTime d2 = t2.toDate();
+    return d1.year == d2.year && d1.month == d2.month && d1.day == d2.day;
+  }
+
+  // Build message item
+  Widget _buildMessageItem(DocumentSnapshot doc, bool showDate) {
+    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+    // Is current user
+    bool isCurrentUser = data['senderID'] == _authService.getCurrentUser()!.uid;
+
+    // Format the timestamp to a readable string
+    Timestamp timestamp = data['timestamp'];
+    String formattedTime = DateFormat('HH:mm').format(timestamp.toDate());
+    String formattedDate = DateFormat('yMMMd').format(timestamp.toDate());
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (showDate)
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Center(
+              child: Text(
+                formattedDate,
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 12,
+                ),
+              ),
+            ),
+          ),
+        ChatBubble(
+          message: data["message"],
+          isCurrentUser: isCurrentUser,
+          time: formattedTime,
+        ),
+      ],
+    );
+  }
+
+  // Build message input
+  Widget _buildUserInput() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 50.0),
+      child: Row(
+        children: [
+          // Textfield should take up most of the place
+          Expanded(
+            child: MyTextField(
+              controller: _messageController,
+              hintText: "Votre message",
+              obscureText: false,
+              focusNode: myFocusNode,
+            ),
+          ),
+          // Send button
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.purple.shade600,
+              shape: BoxShape.circle,
+            ),
+            margin: const EdgeInsets.only(right: 25),
+            child: IconButton(
+              onPressed: sendMessage,
+              icon: const Icon(
+                Icons.arrow_forward,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+/**import 'package:chat_app_test/components/chat_bubble.dart';
+import 'package:chat_app_test/components/my_textfield.dart';
+import 'package:chat_app_test/services/auth/auth_service.dart';
+import 'package:chat_app_test/services/chat/chat_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+
+class ChatPage extends StatefulWidget {
+  final String receiverEmail;
+  final String receiverID;
+
+  ChatPage({super.key, required this.receiverEmail, required this.receiverID});
+
+  @override
+  State<ChatPage> createState() => _ChatPageState();
+}
+
+class _ChatPageState extends State<ChatPage> {
+  //text controller
+  final TextEditingController _messageController = TextEditingController();
+
+  //chat & auth services
+  final ChatService _chatService = ChatService();
+  final AuthService _authService = AuthService();
+
+  //for textfield focus
+  FocusNode myFocusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+
+    //add listener to focus node
+    myFocusNode.addListener(() {
+      if (myFocusNode.hasFocus) {
+        //cause a delay so that the koyboard has time to show up
+        //the the amount of remaining space will be calculated
+        //then scroll down
+        Future.delayed(
+          const Duration(milliseconds: 500),
+          () => scrollDown(),
+        );
+      }
+    });
+    
+    //wait a bit for listView to be built, then scroll to bottom
+    Future.delayed(
+      const Duration(milliseconds: 500),
+      () => scrollDown(),
+    );
+  }
+
+  @override
+  void dispose() {
+    myFocusNode.dispose();
+    _messageController.dispose();
+    super.dispose();
+  }
+
+  //scroll controller
+  final ScrollController _scrollController = ScrollController();
+  void scrollDown() {
+    _scrollController.animateTo(
+      _scrollController.position.maxScrollExtent, 
+      duration: const Duration(seconds: 1), 
+      curve: Curves.fastOutSlowIn
+    );
+  }
+
+  //send message
+  void sendMessage() async {
+    //if there is something inside the textfield
+    if (_messageController.text.isNotEmpty) {
+      // send the message
+      await _chatService.sendMessage(widget.receiverID, _messageController.text);
+      //clear text controller
+      _messageController.clear();
+    }
+    scrollDown();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
+      appBar: AppBar(
+        title: Text(widget.receiverEmail),
         backgroundColor: Colors.transparent,
         foregroundColor: Colors.grey,
         elevation: 0,
@@ -51,10 +312,11 @@ class ChatPage extends StatelessWidget {
       ),
     );
   }
+
   Widget _buildMessageList() {
     String senderID = _authService.getCurrentUser()!.uid;
     return StreamBuilder(
-      stream: _chatService.getMessages(receiverID, senderID), 
+      stream: _chatService.getMessages(widget.receiverID, senderID), 
       builder: (context, snapshot) {
         //errors
         if (snapshot.hasError) {
@@ -66,11 +328,13 @@ class ChatPage extends StatelessWidget {
         }
         //return list view
         return ListView(
+          controller: _scrollController,
           children: snapshot.data!.docs.map((doc) => _buildMessageItem(doc)).toList(),
         );
       }
     );
   }
+
   //build message item
   Widget _buildMessageItem(DocumentSnapshot doc) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
@@ -91,6 +355,7 @@ class ChatPage extends StatelessWidget {
       ),
     );
   }
+
   //build message input
   Widget _buildUserInput() {
     return Padding(
@@ -103,6 +368,7 @@ class ChatPage extends StatelessWidget {
               controller: _messageController,
               hintText: "Votre message",
               obscureText: false,
+              focusNode: myFocusNode,
             )
           ),
           //send button
@@ -124,6 +390,6 @@ class ChatPage extends StatelessWidget {
       ),
     );
   }
-}
+}*/
 
 //54:55
