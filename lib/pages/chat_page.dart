@@ -4,7 +4,7 @@ import 'package:chat_app_test/services/auth/auth_service.dart';
 import 'package:chat_app_test/services/chat/chat_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart'; // Importez cette bibliothèque pour formater l'heure
+import 'package:intl/intl.dart'; // Format time
 
 class ChatPage extends StatefulWidget {
   final String receiverEmail;
