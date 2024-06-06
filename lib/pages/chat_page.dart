@@ -182,7 +182,7 @@ class _ChatPageState extends State<ChatPage> {
           Expanded(
             child: MyTextField(
               controller: _messageController,
-              hintText: "Votre message",
+              hintText: "Votre message...",
               obscureText: false,
               focusNode: myFocusNode,
             ),
@@ -190,7 +190,7 @@ class _ChatPageState extends State<ChatPage> {
           // Send button
           Container(
             decoration: BoxDecoration(
-              color: Colors.purple.shade600,
+              color: Theme.of(context).colorScheme.primary,
               shape: BoxShape.circle,
             ),
             margin: const EdgeInsets.only(right: 25),
@@ -207,6 +207,7 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 }
+
 
 
 /**import 'package:chat_app_test/components/chat_bubble.dart';

@@ -29,8 +29,8 @@ class ChatBubble extends StatelessWidget {
             constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.7),
             decoration: BoxDecoration(
               color: isCurrentUser
-                  ? (isDarkMode ? Colors.purple.shade600 : Colors.green.shade600)
-                  : (isDarkMode ? Colors.blue.shade200 : Colors.grey),
+                  ? (isDarkMode ? Colors.green.shade600 : Colors.blue.shade600)
+                  : (isDarkMode ? Colors.grey.shade700 : Colors.grey.shade400),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Column(
