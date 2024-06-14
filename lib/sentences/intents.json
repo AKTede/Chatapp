@@ -214,12 +214,77 @@
             "patterns": [
                 "Puis-je voir ma dernière commande?",
                 "Montre-moi ma dernière commande.",
-                "À combien revient le montant de ma dernière commande?"
+                "Que y a t il dans ma dernière commande?"
             ],
             "responses": [
                 "Bien évidemment, voici votre dernière commande.",
                 "Bien sûr, voici votre dernière commande.",
-                "Le montant de votre dernière commande est de : "
+                "Le contenu de votre dernière commande est de : "
+            ]
+        },
+        {
+            "tag": "repeat",
+            "patterns": [
+                "Tu peux répeter ?",
+                "Désolé, je n’ai pas compris.",
+                "Je n’ai pas compris, tu peux répéter ?",
+                "Peux-tu reformuler ?",
+                "Peux-tu répéter, s'il te plaît ?",
+                "Je n'ai pas bien saisi, peux-tu répéter ?",
+                "Désolé, je n'ai pas compris, tu peux répéter ?",
+                "Peux-tu redire cela, je n'ai pas compris ?"
+            ],
+            "responses": [
+                "Bien évidemment, voici une autre réponse.",
+                "Bien sûr, voici une autre réponse.",
+                "Je voulais dire : "
+            ]
+        },
+        {
+            "tag": "facture",
+            "patterns": [
+                "Puis-je voir le montant de ma dernière facture?",
+                "Montre-moi ma dernière facture.",
+                "À combien revient le montant de ma dernière facture?"
+            ],
+            "responses": [
+                "Bien évidemment, voici votre dernière facture.",
+                "Bien sûr, voici votre dernière facture.",
+                "Le montant de votre dernière facture est de : "
+            ]
+        },
+        {
+            "tag": "infos-compte",
+            "patterns": [
+                "Quels sont les détails de ce compte ?",
+                "Quelles informations avons-nous sur ce compte ?",
+                "Peux-tu me donner les informations de ce compte ?",
+                "Quelles sont les données de ce compte ?",
+                "J'utilise quel compte ?",
+                "Avec quel compte je suis co?",
+                "Je veux les détails de ce compte.",
+                "Qui suis-je ?",
+                "Quelles sont les spécificités de ce compte ?",
+                "Qu'est ce qu'il y a sur ce compte ?"
+            ],
+            "responses": [
+                "Bien évidemment, voici le compte actuellement utilisé :",
+                "Vous utilisez actuellement le compte suivant :",
+                "Voilà les informations concernant votre compte : "
+            ]
+        },
+        {
+            "tag": "conditions",
+            "patterns": [
+                "Quels sont les termes et conditions d'utilisation ?",
+                "Peux-tu m'expliquer les conditions d'utilisation ?",
+                "Quels sont les conditions générales d'utilisation ?",
+                "Quelles sont les politiques d'utilisation ?",
+                "Peux-tu préciser les conditions d'utilisation ?"
+            ],
+            "responses": [
+                "Bien évidemment, voici nos conditions d'utilisation.",
+                "Nos conditions d'utilisation sont les suivants : "
             ]
         }
     ]
