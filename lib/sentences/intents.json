@@ -1,0 +1,226 @@
+{
+    "intents": [
+        {
+            "tag": "greeting",
+            "patterns": [
+                "salut",
+                "Bonjour",
+                "Est-ce que quelqu'un est là",
+                "Hey",
+                "Hello",
+                "Hi",
+                "Salut tout le monde",
+                "Bonsoir",
+                "Coucou"
+            ],
+            "responses": [
+                "Salut, comment puis-je vous aider?",
+                "Bonjour, je suis heureux de vous voir, comment puis-je vous aider?",
+                "Salut, que puis-je faire pour toi?",
+                "Bonsoir, comment puis-je vous assister ce soir?",
+                "Coucou, comment puis-je vous aider?"
+            ]
+        },
+        {
+            "tag": "goodbye",
+            "patterns": [
+                "Au revoir",
+                "à plus tard",
+                "Adieu",
+                "Bye",
+                "À bientôt"
+            ],
+            "responses": [
+                "À plus tard, et merci pour votre visite",
+                "Passe une bonne journée",
+                "Au revoir, je souhaite vous revoir bientôt",
+                "À bientôt, et merci de votre visite",
+                "Au revoir, prenez soin de vous"
+            ]
+        },
+        {
+            "tag": "thanks",
+            "threshold": 0.75,
+            "patterns": [
+                "Merci",
+                "merci",
+                "merci pour ton aide",
+                "C'est utile",
+                "Merci beaucoup",
+                "Je te remercie",
+                "Merci infiniment"
+            ],
+            "responses": [
+                "Content de vous avoir aidé",
+                "Content de vous avoir été utile",
+                "Avec plaisir!",
+                "Ravi d'avoir pu vous aider!"
+            ]
+        },
+        {
+            "tag": "items",
+            "patterns": [
+                "Quels articles proposez-vous?",
+                "Quels produits sont en stock?",
+                "Puis-je voir votre catalogue?",
+                "Quels articles puis-je acheter ici?",
+                "Montre-moi les produits disponibles.",
+                "Quels types de produits avez-vous?",
+                "Quels produits offrez-vous?",
+                "Quels sont les articles disponibles à l'achat?",
+                "Qu'est-ce que vous vendez?",
+                "Avez-vous des produits en stock?",
+                "Quels sont vos articles en vente?",
+                "Quels produits puis-je trouver ici?",
+                "Quels articles avez-vous en ce moment?",
+                "Quels produits sont disponibles à la vente?",
+                "Que puis-je acheter chez vous?",
+                "Montrez-moi vos produits.",
+                "Puis-je voir les articles que vous avez?",
+                "Quels produits sont actuellement en stock?",
+                "Qu'avez-vous en stock?",
+                "Quels articles pouvez-vous me proposer?",
+                "Quels articles avez-vous dans votre magasin?",
+                "Quels produits proposez-vous actuellement?",
+                "Pouvez-vous me montrer votre catalogue de produits?",
+                "Quels produits puis-je acheter maintenant?",
+                "Quels articles sont disponibles en ce moment?",
+                "Puis-je voir la liste de vos produits?",
+                "Qu'est-ce que vous avez en vente?",
+                "Quels sont les articles en stock?",
+                "Quels produits puis-je acheter chez vous?",
+                "Quels articles sont disponibles à l'achat?"
+            ],
+            "responses": [
+                "Voici certains des produits que nous avons : "
+            ]
+        },
+        {
+            "tag": "product_details",
+            "patterns": [
+                "Je veux en savoir plus sur",
+                "bghit nzid n3ref ela",
+                "Donne moi les informations sur",
+                "en savoir plus sur",
+                "je cherche le",
+                "je cherche le produit",
+                "je cherche une",
+                "je cherche un",
+                "je cherche des",
+                "je cherche l'",
+                "je cherche l produit",
+                "je cherche la",
+                "as tu un",
+                "as tu une",
+                "as tu des",
+                "as tu le",
+                "as tu la",
+                "as tu des",
+                "as tu l'",
+                "avez vous un",
+                "avez vous une",
+                "avez vous l'",
+                "avez vous le",
+                "avez vous la",
+                "avez vous du",
+                "avez vous des",
+                "que peux tu me dire au sujet du produit",
+                "parle moi du produit ",
+                "affiche moi le produit",
+                "je veux savoir si vous avez le produit",
+                "Non je parle du produit",
+                "Et avez vous Non je parle du produit"
+            ],
+            "responses": [
+                "Bien sûr, voici les détails du produit : "
+            ]
+        },
+        {
+            "tag": "similar_products",
+            "patterns": [
+                "y'a-t-il des produits équivalents moins chers",
+                "y'a t'il des produits similaires moins chers",
+                "y'a t-il des similitudes moins chers",
+                "équivalent moins cher",
+                "similaire moins cher",
+                "je veux des produits moins chers que",
+                "je veux des produits plus chers que",
+                "je cherche un produit similaire à",
+                "je cherche un produit équivalent à",
+                "équivalent",
+                "similaire",
+                "donne-moi des équivalents",
+                "Donne-moi des similaires",
+                "donne-moi des moins chers",
+                "moins cher que lui",
+                "moins chers",
+                "plus cher",
+                "plus chers",
+                "y'a-t-il des produits équivalents plus chers?",
+                "équivalent plus cher",
+                "donne-moi des plus chers"
+            ],
+            "responses": [
+                "Bien sûr, voici les similitudes demandées : "
+            ]
+        },
+        {
+            "tag": "view_category",
+            "patterns": [
+                "montre-moi ton catalogue",
+                "quelles sont les catégories disponibles",
+                "quels sont les catalogues disponibles",
+                "catégories disponibles",
+                "les catalogues disponibles",
+                "catégories disponibles",
+                "catalogues disponibles",
+                "catalogue",
+                "catégorie",
+                "catalogues",
+                "catégories"
+            ],
+            "responses": [
+                "Bien sûr, voici la liste des catégories :"
+            ]
+        },
+        {
+            "tag": "search_product_category",
+            "patterns": [
+                "quels sont les produits disponibles dans la catégorie",
+                "quels sont les produits disponibles du catalogue",
+                "montre-moi les articles de la catégorie",
+                "montre-moi la catégorie",
+                "Donne-moi ton catalogue"
+            ],
+            "responses": [
+                "Voici la liste des produits de la catégorie :"
+            ]
+        },
+        {
+            "tag": "search_product_promotion_by_category",
+            "patterns": [
+                "montre moi les produits en promotion dans la categorie",
+                "montre moi les produits en promotion de la categorie ",
+                "promotion de la categorie",
+                "promotion dans la categorie"
+                
+            ],
+            "responses": [
+                "Voici la liste des produits en promotion de la catégorie"
+            ]
+        },
+        {
+            "tag": "commande",
+            "patterns": [
+                "Puis-je voir ma dernière commande?",
+                "Montre-moi ma dernière commande.",
+                "À combien revient le montant de ma dernière commande?"
+            ],
+            "responses": [
+                "Bien évidemment, voici votre dernière commande.",
+                "Bien sûr, voici votre dernière commande.",
+                "Le montant de votre dernière commande est de : "
+            ]
+        }
+    ]
+}
